@@ -20,18 +20,7 @@ import java.security.Principal;
 @SpringBootApplication
 @EnableAutoConfiguration
 @Configuration
-@EnableOAuth2Sso
-@RestController
 public class SimpleTestClient {
-
-    /**
-     * @param user
-     * @return user name of the logged-in user
-     */
-    @RequestMapping("/")
-    public String userName(Principal user) {
-        return "Logged in as: " +user.getName();
-    }
 
     /**
      * Application main entry point, loads config from simpleTestClient.yml

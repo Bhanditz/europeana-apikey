@@ -1,4 +1,4 @@
-package eu.europeana.oauth2.test;
+package eu.europeana.oauth.test;
 
 import eu.europeana.oauth2.AuthorizationServer;
 import org.apache.commons.codec.binary.Base64;

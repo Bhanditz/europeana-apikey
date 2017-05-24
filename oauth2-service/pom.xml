@@ -40,7 +40,14 @@
             <artifactId>spring-security-jwt</artifactId>
             <version>1.0.7.RELEASE</version>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+        </dependency>
 
         <!-- Dependencies only required for testing -->
         <dependency>

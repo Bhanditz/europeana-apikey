@@ -15,7 +15,20 @@ security:
       user-authorization-uri: http://localhost:8888/oauth/authorize
     resource:
       user-info-uri: http://localhost:8888/me
-
+      # getting the key from /oauth/token_key does not work since it is protected by default
+      # jwt:
+      #  key-uri: http://localhost:8888/oauth/token_key
+      # openssl rsa -in jwt.pem -pubout
+    publicKey:
+      -----BEGIN PUBLIC KEY-----
+      MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAsVordTPHFQ21tOPHYgKT
+      s0QXwN7pPvbK0dftD21bKwuRZt5KfjLYwleQ0SXD/NvRpWeB53THt9OJOdYMUxMa
+      N2cC2BZaUeMKmH6afUk93A9ctU2liWfBcoPusWCd4vr/A6AEowuhGd7AxsJOXuqi
+      R7gnibTK4vXLkfSnX4mGH+aahV0d6UbKDG/qli2WT0axBEcRorUSCwFX77lmeToD
+      QxTiira5XIZVAnQlh5OerNY1Ni1Hwb3is8/XTKaOQsGsDm2YIWZinTORxNBviuE9
+      aGh0ae81ZWCMw+eaEJa1j89nYVWEemWI0a5UTB8u1HQx2ZiPcEzPKKaCgEGW/EnC
+      CQIDAQAB
+      -----END PUBLIC KEY-----
 logging:
   level:
     org.springframework.security: DEBUG
