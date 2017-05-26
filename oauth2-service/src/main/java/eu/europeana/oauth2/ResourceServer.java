@@ -20,6 +20,7 @@ import java.util.Map;
  */
 @Configuration
 @EnableWebSecurity
+@RestController
 public class ResourceServer  {
 
     /**

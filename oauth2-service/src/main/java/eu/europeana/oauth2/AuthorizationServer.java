@@ -9,21 +9,30 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.oauth2.common.DefaultOAuth2AccessToken;
+import org.springframework.security.oauth2.common.OAuth2AccessToken;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
+import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.TokenEnhancer;
+import org.springframework.security.oauth2.provider.token.TokenEnhancerChain;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+
+import java.util.*;
 
 /**
  * OAuth2 authorization server.
@@ -54,9 +63,13 @@ public class AuthorizationServer extends WebSecurityConfigurerAdapter {
 
 
 
+
     @Configuration
     @EnableAuthorizationServer
     protected class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
+
+        @Autowired
+        AuthenticationManager authenticationManager;
 
         @Value("${security.oauth2.privateKey}")
         private String privateKey;
@@ -94,6 +107,39 @@ public class AuthorizationServer extends WebSecurityConfigurerAdapter {
             return defaultTokenServices;
         }
 
+        @Override
+        public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
+            super.configure(oauthServer);
+            oauthServer
+                    //.sslOnly()
+                    .allowFormAuthenticationForClients()
+                    .tokenKeyAccess("permitAll()");
+
+
+        }
+
+//        @Bean
+//        public TokenEnhancerChain tokenEnhancerChain(){
+//            final TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+//            List list = new ArrayList();
+//            list.add(new MyTokenEnhancer());
+//            list.add(accessTokenConverter());
+//           // list.add(MyTokenEnhancer(), tokenEnhancer())
+//            tokenEnhancerChain.setTokenEnhancers(list);
+//            return tokenEnhancerChain;
+//        }
+
+        public  class MyTokenEnhancer implements TokenEnhancer {
+            @Override
+            public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {
+             //   final User user = (User) authentication.getPrincipal();
+                final Map<String, Object> additionalInfo = new HashMap<>();
+                additionalInfo.put("claimfromme", "erik");
+                ((DefaultOAuth2AccessToken) accessToken).setAdditionalInformation(additionalInfo);
+                return accessToken;
+            }
+        }
+
         /**
          * Defines the security constraints on the token endpoints /oauth/token_key and /oauth/check_token and enables
          * the JWT tokens
@@ -102,8 +148,19 @@ public class AuthorizationServer extends WebSecurityConfigurerAdapter {
          */
         @Override
         public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+            TokenEnhancerChain tokenEnhancerChain = new TokenEnhancerChain();
+            tokenEnhancerChain.setTokenEnhancers(
+                    Arrays.asList(tokenEnhancer(), accessTokenConverter()));
+
+
             endpoints.tokenStore(tokenStore())
-                    .accessTokenConverter(accessTokenConverter());
+                    .tokenEnhancer(tokenEnhancerChain)
+                    .authenticationManager(authenticationManager);
+        }
+
+        @Bean
+        public TokenEnhancer tokenEnhancer() {
+            return new MyTokenEnhancer();
         }
 
         @Override
@@ -114,6 +171,9 @@ public class AuthorizationServer extends WebSecurityConfigurerAdapter {
                     .authorizedGrantTypes("authorization_code","client_credentials", "password", "refresh_token")
                     .authorities("ROLE_TRUSTED_CLIENT")
                     .scopes("read", "write")
+                    .accessTokenValiditySeconds(10000)
+                    .refreshTokenValiditySeconds(10000)
+                    .autoApprove(true)
                     .and()
                     .withClient("unit_test")
                     .secret("test")
@@ -138,11 +198,8 @@ public class AuthorizationServer extends WebSecurityConfigurerAdapter {
         @Override
         public void configure(HttpSecurity http) throws Exception {
             // @formatter:off
-            http
-                    // making the /oauth/token_key does not work as expectd
-                   // .antMatcher("/oauth/token_key").authorizeRequests().anyRequest().permitAll()
-                   // .and()
-                    .antMatcher("/me").authorizeRequests().anyRequest().authenticated();
+            http.authorizeRequests()
+                    .antMatchers("/me").authenticated();
             // @formatter:on
         }
 

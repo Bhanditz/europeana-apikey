@@ -32,11 +32,15 @@ public class SimpleTestTrustedClient {
     }
 
     private static OAuth2ProtectedResourceDetails withOAuth2Authentication(final String url, final String clientId, final String secret) {
-        ClientCredentialsResourceDetails resource = new ClientCredentialsResourceDetails();
-
+        ResourceOwnerPasswordResourceDetails resource = new  ResourceOwnerPasswordResourceDetails();
         resource.setAccessTokenUri(url);
         resource.setClientId(clientId);
         resource.setClientSecret(secret);
+        resource.setUsername("user");
+        resource.setPassword("test");
+     //   String s = resource.getAccessTokenUri();
+       // resource.setAccessTokenUri("http://clientId:secret@localhost:8888/oauth/token_key");
+
    //     resource.setAuthenticationScheme(AuthenticationScheme.header);
 //        resource.setGrantType("client_credentials");
 //        resource.setScope(asList("read","write"));

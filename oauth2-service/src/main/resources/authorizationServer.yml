@@ -72,7 +72,9 @@ security:
       aGh0ae81ZWCMw+eaEJa1j89nYVWEemWI0a5UTB8u1HQx2ZiPcEzPKKaCgEGW/EnC
       CQIDAQAB
       -----END PUBLIC KEY-----
-
+    resource:
+      jwt:
+        key-uri: http://localhost:8888/oauth/token_key
 logging:
   level:
     org.springframework.security: DEBUG
