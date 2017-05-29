@@ -17,8 +17,8 @@ public class TestController {
      * @return user name of the logged-in user
      */
     @RequestMapping("/")
-    //@PreAuthorize("#oauth2.hasScope('read')")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("#oauth2.hasScope('read')")
+    //@PreAuthorize("hasRole('USER')")
     public String userName(Principal user) {
         return "Logged in as: " +user.getName();
     }

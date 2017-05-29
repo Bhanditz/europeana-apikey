@@ -55,7 +55,7 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
         http.
                 anonymous().disable()
                 .authorizeRequests().antMatchers("/**").authenticated()
-                .and().authorizeRequests()
+              //  .and().authorizeRequests()
                 .and().exceptionHandling().accessDeniedHandler(new OAuth2AccessDeniedHandler());
     }
 }
