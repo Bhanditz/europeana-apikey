@@ -77,9 +77,10 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer oauthServer) throws Exception {
-        super.configure(oauthServer);
+       // super.configure(oauthServer);
         oauthServer
                 //.sslOnly()
+                .checkTokenAccess("isAuthenticated()")
                 .allowFormAuthenticationForClients()
                 .tokenKeyAccess("permitAll()");  //maybe to open??
     }

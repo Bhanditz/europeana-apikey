@@ -19,7 +19,8 @@ security:
      # clientSecret: simpleSecret
      # access-token-uri:oauth/token
      # user-authorization-uri: http://localhost:8888/oauth/authorize
-   #  resource:
+    resource:
+      tokenInfoUri: http://localhost:8080/oauth/check_token
    #   user-info-uri: http://localhost:8888/me
    #   jwt:
    #     key-uri: http://localhost:8888/oauth/token_key
