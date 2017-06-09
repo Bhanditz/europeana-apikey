@@ -1,4 +1,4 @@
-package testme.fennek.demo.controllers;
+package eu.europeana.oauth.test.mvclient.src.main.java.testme.fennek.demo.controllers;
 
 import java.security.Principal;
 

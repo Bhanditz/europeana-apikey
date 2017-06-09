@@ -1,4 +1,4 @@
-package testme.fennek.demo;
+package eu.europeana.oauth.test.mvclient.src.main.java.testme.fennek.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;

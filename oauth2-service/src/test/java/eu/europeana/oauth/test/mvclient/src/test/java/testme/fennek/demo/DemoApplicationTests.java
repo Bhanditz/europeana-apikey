@@ -1,4 +1,4 @@
-package testme.fennek.demo;
+package eu.europeana.oauth.test.mvclient.src.test.java.testme.fennek.demo;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
