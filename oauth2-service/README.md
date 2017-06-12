@@ -1,4 +1,4 @@
-# Example Oauth2 Service with a trusted client# 
+# Example Oauth2 Service with a trusted client # 
 
 The Oauth2 service is based on Spring boot and can be started with **mvn spring-boot:run**. An in memory oauth2 client is
 created with one configured username/password (user/test) which is configured in the [authorizationServer.yml](src/main/resources/authorizationServer.yml).
@@ -11,7 +11,7 @@ that is secured by oauth. It requires a Bearer token (JWT) in the header (that i
 Finally we have a trustedclient, that retrieves a token from the oauth server using the credentials. This client will 
 automatically request new access tokens using the refresh token after expiration of the access token.
 
-# MVC client# 
+# MVC client # 
 
 The MVC client based on Spring boot and can be started with **mvn spring-boot:run** from the **mvcclient** folder. It will start as service on port 8080.
 This MVC app secured using oauth. Requesting a secured web page will result in a login page from the oauth server.
