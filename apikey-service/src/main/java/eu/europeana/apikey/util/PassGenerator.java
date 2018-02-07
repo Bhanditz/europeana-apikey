@@ -21,14 +21,9 @@ import java.security.SecureRandom;
 
 /**
  * Created by luthien on 03/07/2017.
- * Generates pronounceable passwords.
- * <p>
- * <p>A cleaned up and deappletified version of <a href="http://www.multicians.org/thvv/gpw.html">
- * Java Password Generator</a>.
- *
- * @see http://www.multicians.org/thvv/gpw.html
- * @see http://www.multicians.org/thvv/Gpw.java
- * @see http://www.geekality.net/?p=1956
+ * Generates pronounceable passwords. A cleaned up and deappletified version of
+ * the Java Password Generator on www.multicians.org/thvv/gpw.html
+ * .
  */
 public class PassGenerator {
 
@@ -37,8 +32,8 @@ public class PassGenerator {
     /**
      * Generates a new password.
      *
-     * @param length Length the password should have
-     * @return The new password
+     * @param  length the required password length
+     * @return the shiny new password
      */
     public String generate(int length) {
         StringBuffer password = new StringBuffer(length);
