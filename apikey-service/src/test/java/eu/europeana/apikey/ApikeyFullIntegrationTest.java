@@ -298,7 +298,7 @@ public class ApikeyFullIntegrationTest {
         Apikey fifisKey = apikeyRepo.findByEmail(fifisEmail).get();
         fifisKey.setUsage(10000l);
         apikeyRepo.saveAndFlush(fifisKey);
-
+        
         mvc.perform(post("/apikey/" + fifisKey.getApikey() + "/validate")
                             .header(HttpHeaders.AUTHORIZATION, "Basic " + Base64Utils.encodeToString("ApiKey1:PrivateKey1".getBytes()))
                             .param("api", ApiName.SEARCH.toString())
