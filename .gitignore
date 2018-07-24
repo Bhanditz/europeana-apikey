@@ -4,3 +4,7 @@
 
 
 /apikey-service/src/main/resources/application.yml
+**/apikey.user.properties
+
+
+console.log
