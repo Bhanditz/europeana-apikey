@@ -24,6 +24,7 @@ package eu.europeana.apikey;
 
 import eu.europeana.apikey.domain.Apikey;
 import eu.europeana.apikey.repos.ApikeyRepo;
+import eu.europeana.apikey.util.SocksProxyHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -51,14 +52,37 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import java.io.IOException;
+
 @PropertySource(value = "classpath:build.properties", ignoreResourceNotFound = true)
 @SpringBootApplication
 @ComponentScan("eu.europeana.apikey")
 public class Application extends SpringBootServletInitializer {
-
+    /**
+     * This method is called when starting as a Spring-Boot application ('run' this class from your IDE)
+     * @param args
+     */
+    @SuppressWarnings("squid:S2095") // to avoid sonarqube false positive (see https://stackoverflow.com/a/37073154/741249)
     public static void main(String[] args) {
         SpringApplicationBuilder builder = new SpringApplicationBuilder();
         builder.sources(Application.class).run(args);
+    }
+
+    /**
+     * This method is called when starting a 'traditional' war deployment (e.g. in Docker of Cloud Foundry)
+     * @param servletContext
+     * @throws ServletException
+     */
+    @Override
+    public void onStartup(ServletContext servletContext) throws ServletException {
+        try {
+            SocksProxyHelper.injectSocksProxySettings();
+            super.onStartup(servletContext);
+        } catch (IOException e) {
+            throw new ServletException("Error reading properties", e);
+        }
     }
 
     @Component
